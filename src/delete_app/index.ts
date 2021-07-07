@@ -16,6 +16,7 @@ export async function deleteRepo({
       owner: org_name,
       repo: repo_name,
     })
+
     .then((val) => {
       const res = val.data;
       console.log("**************************");
