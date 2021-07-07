@@ -1,14 +1,11 @@
 import { Octokit } from "@octokit/rest";
-import { CreateAppProps, CreateRepoProps } from "./types";
-
-// const octokit = new Octokit({ auth: process.env.GITHUB_OCTOKIT_TOKEN });
+import { DeleteAppProps, DeleteRepoProps } from "./types";
 
 export async function deleteRepo({
   repo_name,
   github_auth_token,
   org_name,
-}: CreateRepoProps) {
-  // if(!github_auth_token) return ;
+}: DeleteRepoProps) {
   const octokit = new Octokit({ auth: github_auth_token });
 
   return octokit.rest.repos
@@ -36,7 +33,7 @@ export async function deleteApp({
   app_name,
   github_auth_token,
   org_name,
-}: CreateAppProps) {
+}: DeleteAppProps) {
   // #region Config
 
   const octokit = new Octokit({ auth: github_auth_token });

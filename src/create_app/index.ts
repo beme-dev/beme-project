@@ -1,14 +1,11 @@
 import { Octokit } from "@octokit/rest";
 import { CreateAppProps, CreateRepoProps } from "./types";
 
-// const octokit = new Octokit({ auth: process.env.GITHUB_OCTOKIT_TOKEN });
-
 export async function createRepo({
   repo_name,
   github_auth_token,
   org_name,
 }: CreateRepoProps) {
-  // if(!github_auth_token) return ;
   const octokit = new Octokit({ auth: github_auth_token });
 
   return octokit.rest.repos

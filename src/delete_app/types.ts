@@ -1,11 +1,10 @@
-export type CreateAppProps = {
+export type DeleteAppProps = {
   app_name: string;
-  generate_auth?: boolean;
   github_auth_token?: string;
   org_name: string;
 };
 
-export type CreateRepoProps = {
+export type DeleteRepoProps = {
   repo_name: string;
   github_auth_token?: string;
   org_name: string;
