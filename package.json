@@ -1,6 +1,6 @@
 {
   "name": "beme-project",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A project to start when you want to build something very great. For people who knows.",
   "main": "src/index.ts",
   "repository": "https://github.com/beme-dev/beme-project.git",
@@ -8,12 +8,13 @@
   "license": "MIT",
   "private": false,
   "dependencies": {
-    "octokit": "^1.1.0"
+    "@octokit/rest": "^18.6.7"
   },
   "scripts": {
     "index": "ts-node src/index.ts"
   },
   "devDependencies": {
+    "@types/node": "^16.0.0",
     "ts-node": "^10.0.0",
     "typescript": "^4.3.5"
   }
