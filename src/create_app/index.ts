@@ -1,5 +1,5 @@
-import { Octokit,  } from "@octokit/rest";
-import { CreateAppProps, CreateRepoProps } from "./types";
+import { Octokit } from '@octokit/rest';
+import { CreateAppProps, CreateRepoProps } from './types';
 
 // const octokit = new Octokit({ auth: process.env.GITHUB_OCTOKIT_TOKEN });
 
@@ -18,29 +18,32 @@ export async function createRepo({
     })
     .then((val) => {
       const res = val.data;
-      console.log("**************************");
-      console.log("id :", res.id);
-      console.log("Full Name :", res.full_name);
+      console.log('**************************');
+      console.log('id :', res.id);
+      console.log('Full Name :', res.full_name);
 
-      console.log("url :", res.url);
-      console.log("git_url :", res.git_url);
-      console.log("html_url :", res.html_url);
+      console.log('url :', res.url);
+      console.log('git_url :', res.git_url);
+      console.log('html_url :', res.html_url);
 
-      console.log("**************************");
-      console.log("**************************");
+      console.log('**************************');
+      console.log('**************************');
 
-      console.log("status :", val.status);
-      console.log("server :", val.headers.server);
+      console.log('status :', val.status);
+      console.log('server :', val.headers.server);
     })
     .catch((er) => {
       const res = er.response;
-      console.log("Request status :", res.status);
-      console.log("Global Messages :", res.data.message);
+      console.log('Request status :', res.status);
+      console.log('Global Messages :', res.data.message);
       console.log(
-        "errors :",
-        res.data.errors.map(({ code, message }: any) => ({ code, message }))
+        'errors :',
+        res.data.errors.map(({ code, message }: any) => ({
+          code,
+          message,
+        })),
       );
-      console.log("Error docs :", res.data.documentation_url);
+      console.log('Error docs :', res.data.documentation_url);
     });
 }
 
@@ -55,11 +58,23 @@ export async function createApp({
   const front = `${app_name}-front`;
   // #endregion
 
-  await createRepo({ github_auth_token, org_name, repo_name: back });
-  await createRepo({ github_auth_token, org_name, repo_name: front });
+  await createRepo({
+    github_auth_token,
+    org_name,
+    repo_name: back,
+  });
+  await createRepo({
+    github_auth_token,
+    org_name,
+    repo_name: front,
+  });
 
   if (generate_auth) {
     const auth = `${app_name}-auth`;
-    await createRepo({ github_auth_token, org_name, repo_name: auth });
+    await createRepo({
+      github_auth_token,
+      org_name,
+      repo_name: auth,
+    });
   }
 }
