@@ -1,5 +1,6 @@
-import { Octokit } from "@octokit/rest";
-import { DeleteAppProps, DeleteRepoProps } from "./types";
+import { Octokit } from '@octokit/rest';
+import { POINT_CONVERSION_COMPRESSED } from 'constants';
+import { DeleteAppProps, DeleteRepoProps } from './types';
 
 export async function deleteRepo({
   repo_name,
@@ -13,19 +14,17 @@ export async function deleteRepo({
       owner: org_name,
       repo: repo_name,
     })
-
-    .then((val) => {
-      const res = val.data;
-      console.log("**************************");
-
-      console.log("status :", val.status);
-      console.log("server :", val.headers.server);
+    .then(() => {
+      console.log(
+        'Deleting **************************************************',
+      );
+      return 200;
     })
-    .catch((er) => {
-      const res = er.response;
-      console.log("Request status :", res.status);
-      console.log("Global Messages :", res.data.message);
-      console.log("Error docs :", res.data.documentation_url);
+    .catch(() => {
+      console.log(
+        'Deleting Error ********************************************',
+      );
+      return 400;
     });
 }
 
@@ -41,14 +40,21 @@ export async function deleteApp({
     .listForOrg({ org: org_name, request: { timeout: 2000 } })
     .then((json) => json.data)
     .then((data) => data.map((repo) => repo.name))
-    .then((data) => data.filter((val) => val.includes(app_name)));
+    .then((data) =>
+      data.filter((val) => val.startsWith(app_name)),
+    );
   // #endregion
+  if (repo_full_names.length < 1) {
+    return Promise.reject().catch(() => 400);
+  }
 
-  repo_full_names.forEach((repo_name) =>
-    deleteRepo({
-      github_auth_token,
-      org_name,
-      repo_name,
-    })
+  return Promise.all(
+    repo_full_names.map((repo_name) =>
+      deleteRepo({
+        github_auth_token,
+        org_name,
+        repo_name,
+      }),
+    ),
   );
 }

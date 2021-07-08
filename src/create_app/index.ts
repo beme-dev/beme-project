@@ -1,77 +1,87 @@
-import { Octokit } from "@octokit/rest";
-import { CreateAppProps, CreateRepoProps } from "./types";
+// import { graphql as gpl } from '@octokit/graphql';
+import { Octokit } from '@octokit/rest';
+import { CreateAppProps, CreateRepoProps } from './types';
+
+// const graphql = gpl.defaults({
+//   headers: {
+//     authorization: `Bearer ${process.env.GITHUB_OCTOKIT_TOKEN}`,
+//   },
+
+//   request: {
+//     timeout: 2000,
+//   },
+// });
 
 export async function createRepo({
-  repo_name,
+  name,
   github_auth_token,
-  org_name,
+  org,
+  isPrivate = true,
+  gitignore_template,
 }: CreateRepoProps) {
   const octokit = new Octokit({ auth: github_auth_token });
 
   return octokit.rest.repos
     .createInOrg({
-      org: org_name,
-      name: `${repo_name}`,
+      org,
+      name,
+      private: isPrivate,
+      gitignore_template,
     })
-    .then((val) => {
-      const res = val.data;
-      console.log("**************************");
-      console.log("id :", res.id);
-      console.log("Full Name :", res.full_name);
-
-      console.log("url :", res.url);
-      console.log("git_url :", res.git_url);
-      console.log("html_url :", res.html_url);
-
-      console.log("**************************");
-      console.log("**************************");
-
-      console.log("status :", val.status);
-      console.log("server :", val.headers.server);
-    })
-    .catch((er) => {
-      const res = er.response;
-      console.log("Request status :", res.status);
-      console.log("Global Messages :", res.data.message);
+    .then(() => {
       console.log(
-        "errors :",
-        res.data.errors.map(({ code, message }: any) => ({
-          code,
-          message,
-        }))
+        'Creating **************************************************',
       );
-      console.log("Error docs :", res.data.documentation_url);
+      return 200;
+    })
+    .catch(() => {
+      console.log(
+        'Creating Error ********************************************',
+      );
+      return 400;
     });
 }
 
 export async function createApp({
-  app_name,
+  name,
   generate_auth = false,
   github_auth_token,
-  org_name,
+  org,
+  isPrivate = true,
+  gitignore_template = 'Node',
 }: CreateAppProps) {
   // #region Config
-  const back = `${app_name}-back`;
-  const front = `${app_name}-front`;
+  const back = `${name}-back`;
+  const front = `${name}-front`;
   // #endregion
 
-  await createRepo({
-    github_auth_token,
-    org_name,
-    repo_name: back,
-  });
-  await createRepo({
-    github_auth_token,
-    org_name,
-    repo_name: front,
-  });
+  Promise.all([
+    createRepo({
+      github_auth_token,
+      org,
+      name: back,
+      isPrivate,
+      gitignore_template,
+    }),
+    createRepo({
+      github_auth_token,
+      org,
+      name: front,
+      isPrivate,
+      gitignore_template,
+    }),
+  ])
+    .then(() => 200)
+    .catch(() => 400);
 
   if (generate_auth) {
-    const auth = `${app_name}-auth`;
+    const auth = `${name}-auth`;
     await createRepo({
       github_auth_token,
-      org_name,
-      repo_name: auth,
+      org,
+      name: auth,
+      isPrivate,
+      gitignore_template,
     });
   }
 }

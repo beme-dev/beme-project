@@ -1,12 +1,18 @@
+import { gitIgnores } from './../constants/number';
+
 export type CreateAppProps = {
-  app_name: string;
+  name: string;
   generate_auth?: boolean;
   github_auth_token?: string;
-  org_name: string;
+  org: string;
+  isPrivate?: boolean;
+  gitignore_template?: typeof gitIgnores[number];
 };
 
 export type CreateRepoProps = {
-  repo_name: string;
+  name: string;
   github_auth_token?: string;
-  org_name: string;
+  org: string;
+  isPrivate?: boolean;
+  gitignore_template: typeof gitIgnores[number];
 };
