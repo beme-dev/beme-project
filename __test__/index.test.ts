@@ -1,4 +1,4 @@
-import { graphql as gpl } from '@octokit/graphql';
+import { graphql as gpl } from "@octokit/graphql";
 
 const graphql = gpl.defaults({
   headers: {
@@ -45,11 +45,11 @@ graphql(
   `,
   {
     input: {
-      name: 'test34',
+      name: "test34",
       ownerId: process.env.REACT_IF_ID,
-      visibility: 'PRIVATE',
+      visibility: "PRIVATE",
     },
-  },
+  }
 )
   .then(console.log)
   .catch(console.log);

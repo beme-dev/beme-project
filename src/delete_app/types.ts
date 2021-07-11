@@ -1,11 +1,11 @@
 export type DeleteAppProps = {
-  app_name: string;
-  github_auth_token?: string;
-  org_name: string;
+  name: string;
+  auth?: string;
+  org: string;
 };
 
 export type DeleteRepoProps = {
-  repo_name: string;
-  github_auth_token?: string;
-  org_name: string;
+  name: string;
+  auth?: string;
+  org: string;
 };

@@ -9,7 +9,8 @@
   "private": false,
   "dependencies": {
     "@octokit/graphql": "^4.6.4",
-    "@octokit/rest": "^18.6.7"
+    "@octokit/rest": "^18.6.7",
+    "openurl": "^1.1.1"
   },
   "scripts": {
     "index": "ts-node src/index.ts",
@@ -18,6 +19,7 @@
   },
   "devDependencies": {
     "@types/node": "^16.0.0",
+    "@types/openurl": "^1.0.0",
     "ts-node": "^10.0.0",
     "typescript": "^4.3.5"
   }

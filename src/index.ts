@@ -1,7 +1,8 @@
-import { Octokit } from '@octokit/rest';
-import { sleep, sleepPromise } from './utils/sleep';
-import { createApp } from './create_app';
-import { deleteApp } from './delete_app';
+import { Octokit } from "@octokit/rest";
+import { sleep, sleepPromise } from "./utils/sleep";
+import { createApp, createRepoByTemplate } from "./create_app";
+import { deleteApp, deleteRepo } from "./delete_app";
+import { open } from "openurl";
 
 // #region Tests d'octokit
 // const octokit = new Octokit({
@@ -89,20 +90,41 @@ import { deleteApp } from './delete_app';
 // #endregion
 
 async function exec() {
-  await createApp({
-    name: 'test',
-    org: 'react-if',
-    github_auth_token: process.env.GITHUB_OCTOKIT_TOKEN,
-    generate_auth: true,
+  // await createApp({
+  //   name: 'test',
+  //   org: 'react-if',
+  //   github_auth_token: process.env.GITHUB_OCTOKIT_TOKEN,
+  //   generate_auth: true,
+  // });
+
+  // await sleep(7 * 1000);
+
+  // await deleteApp({
+  //   app_name: 'test',
+  //   org_name: 'react-if',
+  //   github_auth_token: process.env.GITHUB_OCTOKIT_TOKEN,
+  // });
+
+  const org = "react-if";
+  const name = "test-octokit";
+  const auth = process.env.GITHUB_OCTOKIT_TOKEN;
+
+  await createRepoByTemplate({
+    name,
+    auth,
+    org,
+    template_repo: "gitpod-typescript",
+    include_all_branches: true,
   });
 
-  await sleep(7 * 1000);
 
-  await deleteApp({
-    app_name: 'test',
-    org_name: 'react-if',
-    github_auth_token: process.env.GITHUB_OCTOKIT_TOKEN,
-  });
+  // await sleep(7 * 1000);
+
+  // await deleteRepo({
+  //   org,
+  //   name,
+  //   auth,
+  // });
 }
 
 exec();
